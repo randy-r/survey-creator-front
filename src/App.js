@@ -31,6 +31,8 @@ class App extends Component {
         </div>
         <i className="material-icons">done</i>
         <Button raised primary iconEl={<FontIcon>done</FontIcon>} >Spock</Button>
+        <Button raised secondary iconEl={<FontIcon>done</FontIcon>} >Spock</Button>
+        <Button flat secondary iconEl={<FontIcon>done</FontIcon>} >Spock</Button>
 
         <h4 className="md-cell md-cell--12">Font icons from Material Icons</h4>
         <FontIcon>home</FontIcon>
