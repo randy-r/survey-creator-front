@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { NavigationDrawer } from 'react-md';
+
 import logo from './logo.svg';
 import './App.css';
 
@@ -11,18 +13,23 @@ class App extends Component {
       })
       .then(foos => console.log('Got foos: ', foos));
   }
-  
+
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
-      </div>
+      <NavigationDrawer
+        drawerTitle="react-md with CRA"
+        toolbarTitle="Welcome to react-md"
+      >
+        <div className="App">
+          <header className="App-header">
+            <img src={logo} className="App-logo" alt="logo" />
+            <h1 className="App-title">Welcome to React</h1>
+          </header>
+          <p className="App-intro">
+            To get started, edit <code>src/App.js</code> and save to reload.
+          </p>
+        </div>
+      </NavigationDrawer>
     );
   }
 }
