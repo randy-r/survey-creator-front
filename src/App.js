@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { NavigationDrawer } from 'react-md';
+import { NavigationDrawer, Button, FontIcon } from 'react-md';
 
 import logo from './logo.svg';
 import './App.css';
@@ -29,6 +29,16 @@ class App extends Component {
             To get started, edit <code>src/App.js</code> and save to reload.
           </p>
         </div>
+        <i className="material-icons">done</i>
+        <Button raised primary iconEl={<FontIcon>done</FontIcon>} >Spock</Button>
+
+        <h4 className="md-cell md-cell--12">Font icons from Material Icons</h4>
+        <FontIcon>home</FontIcon>
+        <FontIcon>favorite</FontIcon>
+        <h4 className="md-cell md-cell--12">Font icons from FontAwesome</h4>
+        <FontIcon iconClassName="fa fa-star-o" />
+        <FontIcon iconClassName="fa fa-book" />
+        {/* SVGIcons element can be used after the setup : https://react-md.mlaursen.com/components/svg-icons */}
       </NavigationDrawer>
     );
   }
