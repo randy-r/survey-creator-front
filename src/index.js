@@ -1,7 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
+import App from './components/App';
+import NavigationDrawer from './components/NavigationDrawer'
 import registerServiceWorker from './registerServiceWorker';
 import WebFontLoader from 'webfontloader';
 
@@ -15,5 +16,5 @@ WebFontLoader.load({
 	},
 });
 
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(<NavigationDrawer />, document.getElementById('root'));
 registerServiceWorker();
