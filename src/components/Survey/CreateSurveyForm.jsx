@@ -7,11 +7,24 @@ class CreateSurveyForm extends Component {
 
   state = {
     name: "",
-    availableQuestionnares: [{ id: "x" }, { id: "y" }, { id: "z" }],
+    availableQuestionnares: [],
     selectedQuestionnares: []
   }
 
   inProgress = false
+
+  componentDidMount() {
+    const subResource = 'questionnaires';
+    fetch(`/${subResource}`)
+      .then(response => {
+        return response.json();
+      })
+      .then(all => {
+        console.log(all);
+        this.setState({ availableQuestionnares: all });
+      })
+      .catch(e => console.error(`error GET ${subResource}`, e))
+  }
 
   handleNameChange = newVal => this.setState({ name: newVal })
 
@@ -27,6 +40,7 @@ class CreateSurveyForm extends Component {
       selectedQuestionnares: newSQ
     }, () => this.inProgress = false);
   }
+
 
   removeQuestionnare = q => {
     if (this.inProgress) return;
@@ -73,17 +87,17 @@ class CreateSurveyForm extends Component {
         <List className="md-cell md-cell--6 md-paper md-paper--1" >
           <Subheader primary primaryText="All questionares:" />
           {this.state.availableQuestionnares.map(q => (
-            <ListItem key={q.id} primaryText={q.id} onClick={() => this.addQuestionnare(q)} />
+            <ListItem key={q.id} primaryText={q.name} onClick={() => this.addQuestionnare(q)} />
           ))}
 
         </List>
         <List className="md-cell md-cell--6 md-paper md-paper--1">
           <Subheader primary primaryText="Questionares for this survey:" />
           {this.state.selectedQuestionnares.map(q => (
-            <ListItem key={q.id} primaryText={q.id} onClick={() => this.removeQuestionnare(q)} />
+            <ListItem key={q.id} primaryText={q.name} onClick={() => this.removeQuestionnare(q)} />
           ))}
         </List>
-        <Button flat secondary onClick={this.onCancelCallback}>Cancel</Button>
+        <Button flat secondary onClick={this.props.onCancelCallback}>Cancel</Button>
         <Button flat primary onClick={this.createSurvey}>Confirm</Button>
       </div>
     );

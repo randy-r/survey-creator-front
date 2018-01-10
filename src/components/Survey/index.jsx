@@ -27,14 +27,6 @@ class SurveyList extends Component {
   render() {
     return (
       <ExpansionList className={cn({ 'md-cell md-cell--12': false })}>
-        <ExpansionPanel label="SurveyNameA" onCancel={() => console.log('cancel')} >
-          <p>dshabdshabdsabdsabhdsa sh suiaj ds as haushaj pfoij Ubdsa </p>
-          <p>dshabdshabdsabdssd abhdsa sh suiaj ds as haushaj pfoij Ubdsa </p>
-        </ExpansionPanel>
-        <ExpansionPanel label="SurveyNameB" onCancel={() => console.log('cancel')} >
-          <p>dshabdshabdsabdsabhdsa sh suiaj ds as haushaj pfoij Ubdsa </p>
-          <p>dshabdshabdsabdssd abhdsa sh suiaj ds as haushaj pfoij Ubdsa </p>
-        </ExpansionPanel>
         {this.state.surveys.map(s =>
           <ExpansionPanel key={s.id} label={s.name ? s.name : "no-name"} onCancel={() => console.log('cancel')} >
             <p>---{s.id}</p>
@@ -62,7 +54,6 @@ class SimpleModal extends PureComponent {
     return (
       <div>
         <Button onClick={this.show} floating secondary>add</Button>
-        <div style={{ height: '1vh' }} />
         <DialogContainer
           id="simple-action-dialog"
           visible={visible}
@@ -83,6 +74,7 @@ class SurveyPage extends Component {
     return (
       <Fragment>
         <SimpleModal />
+        <div style={{ height: '1vh' }} />
         <SurveyList />
       </Fragment>
     );
