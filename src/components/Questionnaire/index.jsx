@@ -6,7 +6,7 @@ import {
 import cn from 'classnames';
 
 import { CreateQuestionnaireForm } from './CreateQuestionnaireForm';
-import { List } from './List';
+import { List } from '../List';
 
 class CreateFakeQuestionnaireModal extends PureComponent {
   state = { visible: false };
@@ -31,7 +31,7 @@ class CreateFakeQuestionnaireModal extends PureComponent {
           title="Create New Fake Questionnaire"
           width={"100vw"}
         >
-          Select Trick Items
+          <CreateQuestionnaireForm resource="fakequestionnaires" subResource="trickitems" onSaveCallback={this.hide} onCancelCallback={this.hide} />
         </DialogContainer>
       </Fragment>
 
@@ -63,7 +63,7 @@ class CreateQuestionnaireModal extends PureComponent {
           title="Create New Questionnaire"
           width={"100vw"}
         >
-          <CreateQuestionnaireForm onSaveCallback={this.hide} onCancelCallback={this.hide} />
+          <CreateQuestionnaireForm resource="questionnaires" subResource="items" onSaveCallback={this.hide} onCancelCallback={this.hide} />
         </DialogContainer>
       </Fragment>
     );
@@ -77,13 +77,25 @@ class QuestionnairePage extends Component {
     return (
       <Fragment>
         <CreateQuestionnaireModal />
+        <div style={{ height: '1vh' }} />
+        <List resource="questionnaires" titleRender={el => el.name}/>
+      </Fragment>
+    );
+  }
+}
+
+class FakeQuestionnairePage extends Component {
+
+  render() {
+    return (
+      <Fragment>
         <CreateFakeQuestionnaireModal />
         <div style={{ height: '1vh' }} />
-        <List resource="questionnaires" />
+        <List resource="fakequestionnaires" titleRender={el => el.name} />
       </Fragment>
     );
   }
 }
 
 
-export { QuestionnairePage }
+export { QuestionnairePage, FakeQuestionnairePage }

@@ -1,17 +1,17 @@
+// @flow
 import React, { PureComponent, Component, Fragment } from 'react';
 import {
-  TextField, List, ListItem, Subheader, Button
+  TextField, List, ListItem, Subheader, Button, Chip
 } from 'react-md';
 
-class CreateQuestionnaireForm extends Component {
 
-  // resource = 'questionnaires'
-  // subResource = 'items'
-
+// TODO find a way to extract the common functionality of CreateForm* but also keep in mind the perticular API calls, for example the item POST
+class CreateItemForm extends Component {
   state = {
-    name: "",
+    fieldValue: '',
     available: [],
-    selected: []
+    selected: [],
+    imgUrl: ''
   }
 
   inProgress = false
@@ -29,10 +29,14 @@ class CreateQuestionnaireForm extends Component {
       .catch(e => console.error(`error GET ${subResource}`, e))
   }
 
-  handleNameChange = newVal => this.setState({ name: newVal })
+  handleFieldChange = newVal => this.setState({ fieldValue: newVal })
+
+  handleImageUrlChange = newVal => this.setState({ imgUrl: newVal })
 
   add = x => {
     if (this.inProgress) return;
+    // only one anwer template is allowed per item
+    if (this.state.selected.length > 0) return;
     this.inProgress = true;
 
     const newAQ = this.state.available.filter(el => el.id !== x.id);
@@ -58,10 +62,13 @@ class CreateQuestionnaireForm extends Component {
   }
 
   create = () => {
+    if (this.state.selected.length < 1) return;
+
     const payload = {
-      name: this.state.name,
+      text: this.state.fieldValue,
       adminId: "abc",
-      [`${this.props.subResource}Ids`]: this.state.selected.map(el => el.id)
+      answerTemplateId: this.state.selected[0],
+      imgUrl: this.state.imgUrl
     };
 
     fetch(`/${this.props.resource}`, {
@@ -85,25 +92,38 @@ class CreateQuestionnaireForm extends Component {
   render() {
     return (
       <div className="md-grid">
-        <TextField id="survey-name" label="Name" value={this.state.name} onChange={this.handleNameChange} />
+        <TextField id="fieldValue" label={this.props.textFieldLabel} value={this.state.fieldValue} onChange={this.handleFieldChange} />
+        <TextField id="imgUrl" label="Image Url (Optional)" value={this.state.imgUrl} onChange={this.handleImageUrlChange} />
+        <p className="md-cell md-cell--12"> Only one anwer template can be selected.</p>
         <List className="md-cell md-cell--6 md-paper md-paper--1" >
           <Subheader primary primaryText={`All ${this.props.subResource}:`} />
           {this.state.available.map(el => (
-            <ListItem key={el.id} primaryText={el.text} onClick={() => this.add(el)} />
+            <ListItem primaryText="" key={el.id} onClick={() => this.add(el)}
+              // component={
+              //   () => { return el.bullets.map((b, i) => <Chip key={i} label={b.text} />) }
+              // }
+            >
+              {el.bullets.map((b, i) => <Chip key={i} label={b.text} />)}
+            </ListItem>
           ))}
 
         </List>
         <List className="md-cell md-cell--6 md-paper md-paper--1">
           <Subheader primary primaryText="Selected:" />
           {this.state.selected.map(el => (
-            <ListItem key={el.id} primaryText={el.text} onClick={() => this.remove(el)} />
+            <ListItem primaryText="" key={el.id} onClick={() => this.remove(el)} >
+              {el.bullets.map((b, i) => <Chip key={i} label={b.text} />)}
+            </ListItem>
           ))}
         </List>
-        <Button flat secondary onClick={this.props.onCancelCallback}>Cancel</Button>
-        <Button flat primary onClick={this.create}>Confirm</Button>
+        <div className="md-cell md-cell--12">
+          <Button flat secondary onClick={this.props.onCancelCallback}>Cancel</Button>
+          <Button flat primary onClick={this.create}>Confirm</Button>
+        </div>
       </div>
     );
   }
 }
 
-export { CreateQuestionnaireForm }
+
+export { CreateItemForm }

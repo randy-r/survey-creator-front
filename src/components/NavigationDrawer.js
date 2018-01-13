@@ -10,38 +10,10 @@ import withRouter from 'react-router-dom/withRouter';
 
 import NavItemLink from './NavItemLink';
 import { SurveyPage } from './Survey';
-import { QuestionnairePage } from './Questionnaire';
+import { QuestionnairePage, FakeQuestionnairePage } from './Questionnaire';
+import { ItemsPage } from './Item';
+import { AnswerTemplatesPage } from './AnswerTemplate';
 
-const inboxListItems = [{
-  key: 'inbox',
-  primaryText: 'Inbox',
-  leftIcon: <FontIcon>inbox</FontIcon>,
-  active: true,
-}, {
-  key: 'starred',
-  primaryText: 'Starred',
-  leftIcon: <FontIcon>star</FontIcon>,
-}, {
-  key: 'send-mail',
-  primaryText: 'Send mail',
-  leftIcon: <FontIcon>send</FontIcon>,
-}, {
-  key: 'drafts',
-  primaryText: 'Drafts',
-  leftIcon: <FontIcon>drafts</FontIcon>,
-}, { key: 'divider', divider: true }, {
-  key: 'all-mail',
-  primaryText: 'All mail',
-  leftIcon: <FontIcon>mail</FontIcon>,
-}, {
-  key: 'trash',
-  primaryText: 'Trash',
-  leftIcon: <FontIcon>delete</FontIcon>,
-}, {
-  key: 'spam',
-  primaryText: 'Spam',
-  leftIcon: <FontIcon>info</FontIcon>,
-}];
 
 class Simple extends Component {
   constructor(props) {
@@ -74,6 +46,9 @@ class Simple extends Component {
       <NavItemLink to="/surveys" icon="assignment" label="Surveys" key="surveys" />,
       <NavItemLink to="/questionnaires" exact icon="view_agenda" label="Questionnaires" key="questionnaires" />,
       <NavItemLink to="/items" exact icon="view_module" label="Items" key="items" />,
+      <NavItemLink to="/fakequestionnaires" exact icon="dns" label="Fake Questionnaires" key="fakequestionnaires" />,
+      <NavItemLink to="/trickitems" exact icon="texture" label="Trick Items" key="trickitems" />,
+      <NavItemLink to="/answertemplates" exact icon="radio_button_checked" label="Answer Templates" key="answertemplates" />,
     ];
   }
 
@@ -105,8 +80,10 @@ class Simple extends Component {
             <section className="md-text-container md-cell md-cell--12">
               <Route path="/surveys" exact component={SurveyPage} />
               <Route path="/questionnaires" exact component={QuestionnairePage} />
-              <Route path="/items" exact render={() => 'items'} />
-
+              <Route path="/items" exact component={ItemsPage} />
+              <Route path="/fakequestionnaires" exact component={FakeQuestionnairePage} />
+              <Route path="/trickitems" exact render={() => 'trickitems'} />
+              <Route path="/answertemplates" exact component={AnswerTemplatesPage} />
             </section>
           </NavigationDrawer>
         </DialogContainer>

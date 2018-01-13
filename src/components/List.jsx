@@ -28,7 +28,7 @@ class List extends Component {
     return (
       <ExpansionList className={cn({ 'md-cell md-cell--12': false })}>
         {this.state.all.map(s =>
-          <ExpansionPanel key={s.id} label={s.name ? s.name : "<no-name>"} onCancel={() => console.log('cancel')} >
+          <ExpansionPanel key={s.id}  label={this.props.titleRender(s)} onCancel={() => console.log('cancel')} >
             <p>---{s.id}</p>
           </ExpansionPanel>
         )}

@@ -92,7 +92,7 @@ class CreateSurveyForm extends Component {
 
         </List>
         <List className="md-cell md-cell--6 md-paper md-paper--1">
-          <Subheader primary primaryText="Questionares for this survey:" />
+          <Subheader primary primaryText="Selected:" />
           {this.state.selectedQuestionnares.map(q => (
             <ListItem key={q.id} primaryText={q.name} onClick={() => this.removeQuestionnare(q)} />
           ))}
