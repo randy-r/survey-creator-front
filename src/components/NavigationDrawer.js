@@ -9,7 +9,8 @@ import {
 import withRouter from 'react-router-dom/withRouter';
 
 import NavItemLink from './NavItemLink';
-import { SurveyPage } from './Survey/index';
+import { SurveyPage } from './Survey';
+import { QuestionnairePage } from './Questionnaire';
 
 const inboxListItems = [{
   key: 'inbox',
@@ -95,7 +96,7 @@ class Simple extends Component {
             mobileDrawerType={NavigationDrawer.DrawerTypes.TEMPORARY_MINI}
             tabletDrawerType={NavigationDrawer.DrawerTypes.PERSISTENT_MINI}
             desktopDrawerType={NavigationDrawer.DrawerTypes.PERSISTENT_MINI}
-            toolbarTitle="Hello, World!"
+            toolbarTitle="Survey Creator - Admin Panel"
             contentId="main-demo-content"
             temporaryIcon={<FontIcon>menu</FontIcon>}
             persistentIcon={<FontIcon iconClassName="fa fa-arrow-left" />}
@@ -103,7 +104,7 @@ class Simple extends Component {
           >
             <section className="md-text-container md-cell md-cell--12">
               <Route path="/surveys" exact component={SurveyPage} />
-              <Route path="/questionnaires" exact render={() => 'questionnaires'} />
+              <Route path="/questionnaires" exact component={QuestionnairePage} />
               <Route path="/items" exact render={() => 'items'} />
 
             </section>
