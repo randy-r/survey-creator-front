@@ -12,6 +12,7 @@ import NavItemLink from './NavItemLink';
 import { SurveyPage } from './Survey';
 import { QuestionnairePage, FakeQuestionnairePage } from './Questionnaire';
 import { ItemsPage } from './Item';
+import { TrickItemsPage } from './TrickItem';
 import { AnswerTemplatesPage } from './AnswerTemplate';
 
 
@@ -82,7 +83,7 @@ class Simple extends Component {
               <Route path="/questionnaires" exact component={QuestionnairePage} />
               <Route path="/items" exact component={ItemsPage} />
               <Route path="/fakequestionnaires" exact component={FakeQuestionnairePage} />
-              <Route path="/trickitems" exact render={() => 'trickitems'} />
+              <Route path="/trickitems" exact component={TrickItemsPage} />
               <Route path="/answertemplates" exact component={AnswerTemplatesPage} />
             </section>
           </NavigationDrawer>

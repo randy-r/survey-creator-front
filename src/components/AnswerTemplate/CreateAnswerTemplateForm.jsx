@@ -14,7 +14,7 @@ class CreateAnswerTemplateForm extends Component {
 
   add = () => {
     const { newBulletText, bullets } = this.state;
-    if (!newBulletText) return;
+    // if (!newBulletText) return; allow bullets without text
     this.setState({
       bullets: bullets.concat([{ text: newBulletText }]),
       newBulletText: ''
@@ -24,7 +24,7 @@ class CreateAnswerTemplateForm extends Component {
   remove = bullet => {
     const { bullets } = this.state;
     this.setState({
-      bullets: bullets.filter(b => b.text !== bullet.text)
+      bullets: bullets.filter(b => b !== bullet)
     });
   }
 
@@ -68,7 +68,7 @@ class CreateAnswerTemplateForm extends Component {
     return (
       <div className="md-grid">
         <div className="md-cell md-cell--12">
-          {this.state.bullets.map((b, i) => <Chip key={i} label={b.text} removable onClick={() => this.remove(b)} />)}
+          {this.state.bullets.map((b, i) => <Chip key={i} label={`${i + 1}) ${b.text}`} removable onClick={() => this.remove(b)} />)}
         </div>
         <TextField
           id="newBulletText"

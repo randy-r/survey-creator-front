@@ -27,7 +27,7 @@ class AnswerTemplatesPage extends Component {
           )}
         />
         <div style={{ height: '1vh' }} />
-        <List titleRender={el => el.bullets.map(b => b.text).reduce((acc, crt) => `${acc} / ${crt}`)} resource="answerTemplates" />
+        <List titleRender={el => el.bullets.map((b, i) => `(${i + 1})${b.text}`).reduce((acc, crt) => `${acc} ${crt}`)} resource="answerTemplates" />
       </Fragment>
     );
   }

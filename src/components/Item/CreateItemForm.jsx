@@ -103,7 +103,7 @@ class CreateItemForm extends Component {
               //   () => { return el.bullets.map((b, i) => <Chip key={i} label={b.text} />) }
               // }
             >
-              {el.bullets.map((b, i) => <Chip key={i} label={b.text} />)}
+              {el.bullets.map((b, i) => <Chip key={i} label={`${i + 1}) ${b.text}`} />)}
             </ListItem>
           ))}
 
@@ -112,7 +112,7 @@ class CreateItemForm extends Component {
           <Subheader primary primaryText="Selected:" />
           {this.state.selected.map(el => (
             <ListItem primaryText="" key={el.id} onClick={() => this.remove(el)} >
-              {el.bullets.map((b, i) => <Chip key={i} label={b.text} />)}
+              {el.bullets.map((b, i) => <Chip key={i} label={`${i + 1}) ${b.text}`} />)}
             </ListItem>
           ))}
         </List>
