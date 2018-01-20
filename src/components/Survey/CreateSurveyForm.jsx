@@ -3,6 +3,7 @@ import {
   TextField, List, ListItem, Subheader, Button
 } from 'react-md';
 
+
 class CreateSurveyForm extends Component {
 
   state = {
@@ -61,7 +62,7 @@ class CreateSurveyForm extends Component {
       adminId: "abc",
       questionaresIds: this.state.selectedQuestionnares.map(q => q.id)
     };
-    
+
     fetch("/api/surveys", {
       headers: {
         'Accept': 'application/json',

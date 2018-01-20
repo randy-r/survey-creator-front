@@ -6,6 +6,8 @@ import {
 import cn from 'classnames';
 
 import { CreateSurveyForm } from './CreateSurveyForm';
+import { getSurveyPublicUrls } from '../../utils';
+
 
 class SurveyList extends Component {
 
@@ -25,11 +27,14 @@ class SurveyList extends Component {
 
 
   render() {
+    const publicUrl = new URL(process.env.PUBLIC_URL, window.location);
+
     return (
       <ExpansionList className={cn({ 'md-cell md-cell--12': false })}>
         {this.state.surveys.map(s =>
           <ExpansionPanel key={s.id} label={s.name ? s.name : "no-name"} onCancel={() => console.log('cancel')} >
-            <p>---{s.id}</p>
+            <h4>public urls: </h4>
+            {getSurveyPublicUrls(s.id).map(u => <p> <a href={u}>{u}</a>  </p>)}
           </ExpansionPanel>
         )}
       </ExpansionList>
