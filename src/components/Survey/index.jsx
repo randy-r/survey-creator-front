@@ -12,7 +12,7 @@ class SurveyList extends Component {
   state = { surveys: [] }
 
   componentDidMount() {
-    fetch('/surveys')
+    fetch('/api/surveys')
       .then(response => {
         return response.json();
       })

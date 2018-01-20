@@ -18,7 +18,7 @@ class CreateQuestionnaireForm extends Component {
 
   componentDidMount() {
     const { subResource } = this.props;
-    fetch(`/${subResource}`)
+    fetch(`/api/${subResource}`)
       .then(response => {
         return response.json();
       })
@@ -64,7 +64,7 @@ class CreateQuestionnaireForm extends Component {
       [`${this.props.subResource}Ids`]: this.state.selected.map(el => el.id)
     };
 
-    fetch(`/${this.props.resource}`, {
+    fetch(`/api/${this.props.resource}`, {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'

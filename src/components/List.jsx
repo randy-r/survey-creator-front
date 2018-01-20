@@ -12,7 +12,7 @@ class List extends Component {
 
   componentDidMount() {
     const { resource } = this.props;
-    fetch(`/${resource}`)
+    fetch(`/api/${resource}`)
       .then(response => {
         return response.json();
       })

@@ -15,7 +15,7 @@ class CreateSurveyForm extends Component {
 
   componentDidMount() {
     const subResource = 'questionnaires';
-    fetch(`/${subResource}`)
+    fetch(`/api/${subResource}`)
       .then(response => {
         return response.json();
       })
@@ -62,7 +62,7 @@ class CreateSurveyForm extends Component {
       questionaresIds: this.state.selectedQuestionnares.map(q => q.id)
     };
     
-    fetch("/surveys", {
+    fetch("/api/surveys", {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'

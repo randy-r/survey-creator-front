@@ -33,7 +33,7 @@ class CreateTrickItemForm extends Component {
       trickAnswers
     };
   
-    fetch(`/${this.props.resource}`, {
+    fetch(`/api/${this.props.resource}`, {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'

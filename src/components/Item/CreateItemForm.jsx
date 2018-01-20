@@ -18,7 +18,7 @@ class CreateItemForm extends Component {
 
   componentDidMount() {
     const { subResource } = this.props;
-    fetch(`/${subResource}`)
+    fetch(`/api/${subResource}`)
       .then(response => {
         return response.json();
       })
@@ -71,7 +71,7 @@ class CreateItemForm extends Component {
       imgUrl: this.state.imgUrl
     };
 
-    fetch(`/${this.props.resource}`, {
+    fetch(`/api/${this.props.resource}`, {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
