@@ -61,7 +61,8 @@ class CreateQuestionnaireForm extends Component {
     const payload = {
       name: this.state.name,
       adminId: "abc",
-      [`${this.props.subResource}Ids`]: this.state.selected.map(el => el.id)
+      [`${this.props.subResource}Ids`]: this.state.selected.map(el => el.id),
+      type: this.props.questionnaireType
     };
 
     fetch(`/api/${this.props.resource}`, {
@@ -83,20 +84,30 @@ class CreateQuestionnaireForm extends Component {
   }
 
   render() {
+    const { questionnaireType } = this.props;
+    let displayItem;
+    if (questionnaireType === 'valid') {
+      displayItem = item => item.text;
+    } else {
+      displayItem = item => item
+        .blocks
+        .map(b => b.type === 'text' ? b.text : '_')
+        .reduce((acc, crt) => `${acc} ${crt} `);
+    }
     return (
       <div className="md-grid">
         <TextField id="survey-name" label="Name" value={this.state.name} onChange={this.handleNameChange} />
         <List className="md-cell md-cell--6 md-paper md-paper--1" >
           <Subheader primary primaryText={`All ${this.props.subResource}:`} />
           {this.state.available.map(el => (
-            <ListItem key={el.id} primaryText={el.text} onClick={() => this.add(el)} />
+            <ListItem key={el.id} primaryText={displayItem(el)} onClick={() => this.add(el)} />
           ))}
 
         </List>
         <List className="md-cell md-cell--6 md-paper md-paper--1">
           <Subheader primary primaryText="Selected:" />
           {this.state.selected.map(el => (
-            <ListItem key={el.id} primaryText={el.text} onClick={() => this.remove(el)} />
+            <ListItem key={el.id} primaryText={displayItem(el)} onClick={() => this.remove(el)} />
           ))}
         </List>
         <Button flat secondary onClick={this.props.onCancelCallback}>Cancel</Button>

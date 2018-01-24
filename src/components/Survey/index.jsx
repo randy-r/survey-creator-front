@@ -34,7 +34,7 @@ class SurveyList extends Component {
         {this.state.surveys.map(s =>
           <ExpansionPanel key={s.id} label={s.name ? s.name : "no-name"} onCancel={() => console.log('cancel')} >
             <h4>public urls: </h4>
-            {getSurveyPublicUrls(s.id).map(u => <p> <a href={u}>{u}</a>  </p>)}
+            {getSurveyPublicUrls(s.id).map(u => <p key={s.id}> <a href={u}>{u}</a>  </p>)}
           </ExpansionPanel>
         )}
       </ExpansionList>

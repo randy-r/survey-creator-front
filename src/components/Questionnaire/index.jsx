@@ -31,7 +31,7 @@ class CreateFakeQuestionnaireModal extends PureComponent {
           title="Create New Fake Questionnaire"
           width={"100vw"}
         >
-          <CreateQuestionnaireForm resource="fakequestionnaires" subResource="trickitems" onSaveCallback={this.hide} onCancelCallback={this.hide} />
+          <CreateQuestionnaireForm questionnaireType="fake" resource="fakequestionnaires" subResource="trickitems" onSaveCallback={this.hide} onCancelCallback={this.hide} />
         </DialogContainer>
       </Fragment>
 
@@ -63,7 +63,7 @@ class CreateQuestionnaireModal extends PureComponent {
           title="Create New Questionnaire"
           width={"100vw"}
         >
-          <CreateQuestionnaireForm resource="questionnaires" subResource="items" onSaveCallback={this.hide} onCancelCallback={this.hide} />
+          <CreateQuestionnaireForm questionnaireType="valid" resource="questionnaires" subResource="items" onSaveCallback={this.hide} onCancelCallback={this.hide} />
         </DialogContainer>
       </Fragment>
     );
