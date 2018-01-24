@@ -11,7 +11,6 @@ class CreateSurveyForm extends Component {
     availableQuestionnares: [],
     availableFakeQuestionnares: [],
     selectedQuestionnares: [],
-    selectedFakeQuestionnares: []
   }
 
   inProgress = false
@@ -95,8 +94,8 @@ class CreateSurveyForm extends Component {
     const payload = {
       name: this.state.name,
       adminId: "xyz",
-      questionaresIds: this.state.selectedQuestionnares.map(q => q.id)
-        .concat(this.state.selectedFakeQuestionnares.map(fq => fq.id))
+      questionaresIDsAndTypes: this.state.selectedQuestionnares
+        .map(q => ({ id: q.id, type: q.type }))
     };
 
     fetch("/api/surveys", {
