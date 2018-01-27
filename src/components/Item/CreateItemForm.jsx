@@ -64,10 +64,14 @@ class CreateItemForm extends Component {
   create = () => {
     if (this.state.selected.length < 1) return;
 
+    let answerTemplate = this.state.selected[0];
+    delete answerTemplate.adminId;
+    delete answerTemplate.id;
+
     const payload = {
       text: this.state.fieldValue,
       adminId: "abc",
-      answerTemplateId: this.state.selected[0],
+      answerTemplate,
       imgUrl: this.state.imgUrl
     };
 

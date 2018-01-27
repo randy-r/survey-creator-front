@@ -90,7 +90,35 @@ class CreateSurveyForm extends Component {
     }
   }
 
+  validate = () => {
+    // requirements say only 2 FQs are allowed and the must be adjecent
+    const { selectedQuestionnares } = this.state;
+    if(selectedQuestionnares.length < 1) return false;
+    let numFakes = 0;
+    let prevWasFake = false;
+    for (let i = 0; i < selectedQuestionnares.length; ++i) {
+      const q = selectedQuestionnares[i];
+      if (q.type === 'fake') {
+        ++numFakes;
+        if (numFakes > 2) return false;
+        prevWasFake = true;
+      }
+      else if(prevWasFake && numFakes < 2){ //[..., fake, valid, ...] but not yet 2 fakes => adjecenty break
+        return false;
+      }
+    }
+    if (numFakes < 2) {
+      return false;
+    }
+    return true;
+  }
+
   createSurvey = () => {
+    if (!this.validate()) {
+      alert('You must select at least 2 fake questionares! The must be placed adjecent to each other.');
+      return;
+    }
+
     const payload = {
       name: this.state.name,
       adminId: "xyz",
