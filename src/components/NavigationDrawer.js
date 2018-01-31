@@ -16,6 +16,14 @@ import { TrickItemsPage } from './TrickItem';
 import { AnswerTemplatesPage } from './AnswerTemplate';
 
 
+const routesToTitle = new Map();
+routesToTitle.set('surveys', 'Surveys');
+routesToTitle.set('questionnaires', 'Questionnaires');
+routesToTitle.set('items', 'Items');
+routesToTitle.set('fakequestionnaires', 'Fake Questionnaires');
+routesToTitle.set('trickitems', 'Trick Items');
+routesToTitle.set('answertemplates', 'Answer Templates');
+
 class Simple extends Component {
   constructor(props) {
     super(props);
@@ -40,9 +48,7 @@ class Simple extends Component {
   getnavItems = () => {
     const { location, history, match } = this.props;
     // const { listItemPressed } = location.state;
-    console.log(location);
-    console.log(history);
-    console.log(match);
+
     return [
       <NavItemLink to="/surveys" icon="assignment" label="Surveys" key="surveys" />,
       <NavItemLink to="/questionnaires" exact icon="view_agenda" label="Questionnaires" key="questionnaires" />,
@@ -55,6 +61,9 @@ class Simple extends Component {
 
   render() {
     const { visible, renderNode } = this.state;
+    const { location, history, match } = this.props;
+    const matchedRoute = location.pathname.split('/')[1];
+    const title = routesToTitle.get(matchedRoute);
     return (
       <div>
         <DialogContainer
@@ -72,7 +81,7 @@ class Simple extends Component {
             mobileDrawerType={NavigationDrawer.DrawerTypes.TEMPORARY_MINI}
             tabletDrawerType={NavigationDrawer.DrawerTypes.PERSISTENT_MINI}
             desktopDrawerType={NavigationDrawer.DrawerTypes.PERSISTENT_MINI}
-            toolbarTitle="Survey Creator - Admin Panel"
+            toolbarTitle={title}
             contentId="main-demo-content"
             temporaryIcon={<FontIcon>menu</FontIcon>}
             persistentIcon={<FontIcon iconClassName="fa fa-arrow-left" />}
