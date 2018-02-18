@@ -2,6 +2,7 @@ import React, { PureComponent, Component, Fragment } from 'react';
 import {
   TextField, List, ListItem, Subheader, Button
 } from 'react-md';
+import { createAuthorizedRequest } from '../../utils';
 
 
 class CreateSurveyForm extends Component {
@@ -18,7 +19,7 @@ class CreateSurveyForm extends Component {
   componentDidMount() {
     let subResource;
     subResource = 'questionnaires';
-    fetch(`/api/${subResource}`)
+    fetch(createAuthorizedRequest(`/api/${subResource}`))
       .then(response => {
         return response.json();
       })
@@ -30,7 +31,7 @@ class CreateSurveyForm extends Component {
 
 
     subResource = 'fakequestionnaires';
-    fetch(`/api/${subResource}`)
+    fetch(createAuthorizedRequest(`/api/${subResource}`))
       .then(response => {
         return response.json();
       })
@@ -93,7 +94,7 @@ class CreateSurveyForm extends Component {
   validate = () => {
     // requirements say only 2 FQs are allowed and the must be adjecent
     const { selectedQuestionnares } = this.state;
-    if(selectedQuestionnares.length < 1) return false;
+    if (selectedQuestionnares.length < 1) return false;
     let numFakes = 0;
     let prevWasFake = false;
     for (let i = 0; i < selectedQuestionnares.length; ++i) {
@@ -103,7 +104,7 @@ class CreateSurveyForm extends Component {
         if (numFakes > 2) return false;
         prevWasFake = true;
       }
-      else if(prevWasFake && numFakes < 2){ //[..., fake, valid, ...] but not yet 2 fakes => adjecenty break
+      else if (prevWasFake && numFakes < 2) { //[..., fake, valid, ...] but not yet 2 fakes => adjecenty break
         return false;
       }
     }
@@ -126,14 +127,14 @@ class CreateSurveyForm extends Component {
         .map(q => ({ id: q.id, type: q.type }))
     };
 
-    fetch("/api/surveys", {
+    fetch(createAuthorizedRequest("/api/surveys", {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
       method: "POST",
       body: JSON.stringify(payload)
-    }).then(response => {
+    })).then(response => {
       return response.json();
     }).then(json => {
       console.log(json);

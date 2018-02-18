@@ -6,41 +6,11 @@ import {
 import cn from 'classnames';
 
 import { CreateSurveyForm } from './CreateSurveyForm';
-import { getSurveyPublicUrls } from '../../utils';
+import { getSurveyPublicUrls, getToken, createAuthorizedRequest } from '../../utils';
+import { List } from '../List';
 
 
-class SurveyList extends Component {
 
-  state = { surveys: [] }
-
-  componentDidMount() {
-    fetch('/api/surveys')
-      .then(response => {
-        return response.json();
-      })
-      .then(surveys => {
-        console.log(surveys);
-        this.setState({ surveys });
-      })
-      .catch(e => console.error('error GET /surveys', e))
-  }
-
-
-  render() {
-    const publicUrl = new URL(process.env.PUBLIC_URL, window.location);
-
-    return (
-      <ExpansionList className={cn({ 'md-cell md-cell--12': false })}>
-        {this.state.surveys.map(s =>
-          <ExpansionPanel key={s.id} label={s.name ? s.name : "no-name"} onCancel={() => console.log('cancel')} >
-            <h4>public urls: </h4>
-            {getSurveyPublicUrls(s.id).map(u => <p key={s.id}> <a href={u}>{u}</a>  </p>)}
-          </ExpansionPanel>
-        )}
-      </ExpansionList>
-    );
-  }
-}
 
 
 class SimpleModal extends PureComponent {
@@ -80,7 +50,17 @@ class SurveyPage extends Component {
       <Fragment>
         <SimpleModal />
         <div style={{ height: '1vh' }} />
-        <SurveyList />
+        <List
+          resource="surveys"
+          createContentUrl={id => `/api/surveys/${id}?includeQuestionnaires=true`}
+          titleRender={s => s.name ? s.name : "no-name"}
+          renderContent={s => (
+            <Fragment>
+              <h4>public urls: </h4>
+              {getSurveyPublicUrls(s.id).map(u => <p key={u}><a href={u}>{u}</a></p>)}
+            </Fragment>
+          )}
+        />
       </Fragment>
     );
   }

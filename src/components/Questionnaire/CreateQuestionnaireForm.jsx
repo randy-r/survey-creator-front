@@ -2,6 +2,7 @@ import React, { PureComponent, Component, Fragment } from 'react';
 import {
   TextField, List, ListItem, Subheader, Button
 } from 'react-md';
+import { createAuthorizedRequest } from '../../utils';
 
 class CreateQuestionnaireForm extends Component {
 
@@ -18,7 +19,7 @@ class CreateQuestionnaireForm extends Component {
 
   componentDidMount() {
     const { subResource } = this.props;
-    fetch(`/api/${subResource}`)
+    fetch(createAuthorizedRequest(`/api/${subResource}`))
       .then(response => {
         return response.json();
       })
@@ -65,14 +66,14 @@ class CreateQuestionnaireForm extends Component {
       type: this.props.questionnaireType
     };
 
-    fetch(`/api/${this.props.resource}`, {
+    fetch(createAuthorizedRequest(`/api/${this.props.resource}`, {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
       method: "POST",
       body: JSON.stringify(payload)
-    }).then(response => {
+    })).then(response => {
       return response.json();
     }).then(json => {
       console.log(json);

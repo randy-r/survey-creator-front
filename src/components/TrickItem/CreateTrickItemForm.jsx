@@ -3,6 +3,7 @@ import React, { PureComponent, Component, Fragment } from 'react';
 import {
   TextField, List, ListItem, Subheader, Button, Chip, Checkbox
 } from 'react-md';
+import { createAuthorizedRequest } from '../../utils';
 
 
 const InputFieldLikeText = ({ text }) => (
@@ -33,14 +34,14 @@ class CreateTrickItemForm extends Component {
       trickAnswers
     };
   
-    fetch(`/api/${this.props.resource}`, {
+    fetch(createAuthorizedRequest(`/api/${this.props.resource}`, {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
       method: "POST",
       body: JSON.stringify(payload)
-    }).then(response => {
+    })).then(response => {
       return response.json();
     }).then(json => {
       console.log(json);
@@ -113,7 +114,7 @@ class CreateTrickItemForm extends Component {
     const { trickAnswers } = this.state;
     const answers = [];
     return trickAnswers.map((a, j) =>
-      <Fragment>
+      <Fragment key={j}>
         <InputFieldLikeText text={`${j + 1})`} />
         {a.values.map((v, i) => (
           // show each field

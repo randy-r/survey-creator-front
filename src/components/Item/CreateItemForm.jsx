@@ -3,6 +3,7 @@ import React, { PureComponent, Component, Fragment } from 'react';
 import {
   TextField, List, ListItem, Subheader, Button, Chip
 } from 'react-md';
+import { createAuthorizedRequest } from '../../utils';
 
 
 // TODO find a way to extract the common functionality of CreateForm* but also keep in mind the perticular API calls, for example the item POST
@@ -18,7 +19,7 @@ class CreateItemForm extends Component {
 
   componentDidMount() {
     const { subResource } = this.props;
-    fetch(`/api/${subResource}`)
+    fetch(createAuthorizedRequest(`/api/${subResource}`))
       .then(response => {
         return response.json();
       })
@@ -75,14 +76,14 @@ class CreateItemForm extends Component {
       imgUrl: this.state.imgUrl
     };
 
-    fetch(`/api/${this.props.resource}`, {
+    fetch(createAuthorizedRequest(`/api/${this.props.resource}`, {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
       method: "POST",
       body: JSON.stringify(payload)
-    }).then(response => {
+    })).then(response => {
       return response.json();
     }).then(json => {
       console.log(json);
@@ -103,9 +104,9 @@ class CreateItemForm extends Component {
           <Subheader primary primaryText={`All ${this.props.subResource}:`} />
           {this.state.available.map(el => (
             <ListItem primaryText="" key={el.id} onClick={() => this.add(el)}
-              // component={
-              //   () => { return el.bullets.map((b, i) => <Chip key={i} label={b.text} />) }
-              // }
+            // component={
+            //   () => { return el.bullets.map((b, i) => <Chip key={i} label={b.text} />) }
+            // }
             >
               {el.bullets.map((b, i) => <Chip key={i} label={`${i + 1}) ${b.text}`} />)}
             </ListItem>

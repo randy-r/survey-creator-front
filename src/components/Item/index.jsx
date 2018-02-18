@@ -19,7 +19,7 @@ class ItemsPage extends Component {
         title="Create New Item" 
         renderContent={hide => <CreateItemForm resource="items" subResource="answerTemplates" textFieldLabel="Text" onSaveCallback={hide} onCancelCallback={hide} />} />
         <div style={{ height: '1vh' }} />
-        <List titleRender={el => el.text} resource="items"  />
+        <List titleRender={el => el.text} resource="items" detailsDataExists />
       </Fragment>
     );
   }

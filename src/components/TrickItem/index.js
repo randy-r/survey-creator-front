@@ -25,7 +25,7 @@ class TrickItemsPage extends Component {
           title="Create New Trick Item"
           renderContent={hide => <CreateTrickItemForm resource="trickitems" textFieldLabel="Text" onSaveCallback={hide} onCancelCallback={hide} />} />
         <div style={{ height: '1vh' }} />
-        <List titleRender={this.buildTitle} resource="trickitems" />
+        <List titleRender={this.buildTitle} resource="trickitems" detailsDataExists />
       </Fragment>
     );
   }

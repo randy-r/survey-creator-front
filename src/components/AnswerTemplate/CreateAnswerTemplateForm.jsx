@@ -3,6 +3,7 @@ import React, { PureComponent, Component, Fragment } from 'react';
 import {
   TextField, List, ListItem, Subheader, Button, Chip
 } from 'react-md';
+import { createAuthorizedRequest, getToken } from '../../utils';
 
 
 class CreateAnswerTemplateForm extends Component {
@@ -37,14 +38,14 @@ class CreateAnswerTemplateForm extends Component {
       adminId: "abc",
     };
 
-    fetch(`/api/${this.props.resource}`, {
+    fetch(createAuthorizedRequest(`/api/${this.props.resource}`, {
       headers: {
         'Accept': 'application/json',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
       method: "POST",
       body: JSON.stringify(payload)
-    }).then(response => {
+    })).then(response => {
       return response.json();
     }).then(json => {
       console.log(json);

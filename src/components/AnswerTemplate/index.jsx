@@ -1,14 +1,45 @@
-import React, { PureComponent, Component, Fragment } from 'react';
+import React, { Component, Fragment } from 'react';
 import {
-  Button, DialogContainer, TextField, ExpansionPanel,
-  ExpansionList
+  Chip, List, ListItem
 } from 'react-md';
 import cn from 'classnames';
 
-import { List } from '../List';
 import CreateFormModalTrigger from '../CreateFormModalTrigger';
 import CreateAnswerTemplateForm from './CreateAnswerTemplateForm';
+import { createAuthorizedRequest } from '../../utils';
 
+
+class AnswerTemplatesList extends Component {
+
+  state = { all: [] }
+
+  componentDidMount() {
+    const resource = "answerTemplates";
+    fetch(createAuthorizedRequest(`/api/${resource}`))
+      .then(response => {
+        return response.json();
+      })
+      .then(all => {
+        console.log(all);
+        this.setState({ all });
+      })
+      .catch(e => console.error(`error GET ${resource}`, e))
+  }
+
+
+  render() {
+    const { detailsDataExists, resource, titleRender } = this.props;
+    return (
+      <List className={cn({ 'md-cell md-cell--12': false })}>
+        {this.state.all.map(s =>
+          <ListItem key={s.id}
+            primaryText={s.bullets.map((b, i) => <Chip key={i} label={`${b.text}`} />)}
+          />
+        )}
+      </List>
+    );
+  }
+}
 
 class AnswerTemplatesPage extends Component {
 
@@ -27,7 +58,7 @@ class AnswerTemplatesPage extends Component {
           )}
         />
         <div style={{ height: '1vh' }} />
-        <List titleRender={el => el.bullets.map((b, i) => `(${i + 1})${b.text}`).reduce((acc, crt) => `${acc} ${crt}`)} resource="answerTemplates" />
+        <AnswerTemplatesList />
       </Fragment>
     );
   }
