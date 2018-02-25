@@ -12,16 +12,22 @@ export const getSurveyPublicUrls = surveyId => {
 export const getToken = () => localStorage.getItem('access_token');
 
 export const createAuthorizedRequest = (input, init) => {
-  let newInit = init;
-  if (init) {
-    const { headers } = init;
-    if (headers && headers.append) {
-      headers.append('Authorization', `Bearer ${getToken()}`);
-    } else {
-      headers['Authorization'] = `Bearer ${getToken()}`;
-    }
+  let newInit = { ...init };
+  const headers = newInit.headers || {};
+
+  const k = 'Authorization';
+  const v = `Bearer ${getToken()}`;
+
+  let newHeaders;
+
+  if (headers.constructor === window.Headers) {
+    const newHeaders = new Headers(headers);
+    newHeaders.append(k, v);
   } else {
-    newInit = { headers: { 'Authorization': `Bearer ${getToken()}` } };
+    newHeaders = { ...headers };
+    newHeaders[k] = v;
   }
+
+  newInit.headers = newHeaders;
   return new Request(input, newInit);
 }
