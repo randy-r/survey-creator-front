@@ -71,7 +71,6 @@ class CreateItemForm extends Component {
 
     const payload = {
       text: this.state.fieldValue,
-      adminId: "abc",
       answerTemplate,
       imgUrl: this.state.imgUrl
     };

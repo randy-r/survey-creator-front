@@ -51,7 +51,7 @@ class ExpansionPanelWithData extends Component {
   }
 
   render() {
-    const { id, resource, renderContent, ...panelProps } = this.props;
+    const { id, resource, renderContent, contentUrl, ...panelProps } = this.props;
     const { entity } = this.state;
     const jsonData = entity || {};
     return (
@@ -98,7 +98,7 @@ class List extends Component {
             data={detailsDataExists ? s : null}
             resource={resource}
             renderContent={renderContent}
-            contentUrl={createContentUrl ? createContentUrl(s.id): null}
+            contentUrl={createContentUrl ? createContentUrl(s.id) : null}
             label={titleRender(s)}
             onCancel={() => console.log('cancel')}
           />

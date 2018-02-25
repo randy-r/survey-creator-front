@@ -35,7 +35,6 @@ class CreateAnswerTemplateForm extends Component {
 
     const payload = {
       bullets,
-      adminId: "abc",
     };
 
     fetch(createAuthorizedRequest(`/api/${this.props.resource}`, {

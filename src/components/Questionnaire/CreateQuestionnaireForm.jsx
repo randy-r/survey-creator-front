@@ -61,7 +61,6 @@ class CreateQuestionnaireForm extends Component {
   create = () => {
     const payload = {
       name: this.state.name,
-      adminId: "abc",
       [`${this.props.subResource}Ids`]: this.state.selected.map(el => el.id),
       type: this.props.questionnaireType
     };

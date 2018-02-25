@@ -1,8 +1,10 @@
 import React, { PureComponent, Component, Fragment } from 'react';
 import {
-  TextField, List, ListItem, Subheader, Button
+  TextField, List, ListItem, Subheader, Button, SelectField
 } from 'react-md';
 import { createAuthorizedRequest } from '../../utils';
+import FollowUpSurveySelection from './FollowUpSurveySelection';
+import FollowUpIntervalFields from './FollowUpIntervalFields';
 
 
 class CreateSurveyForm extends Component {
@@ -15,6 +17,8 @@ class CreateSurveyForm extends Component {
   }
 
   inProgress = false
+  followUpSurveyId = null;
+  followUpMilliseconds = null
 
   componentDidMount() {
     let subResource;
@@ -119,12 +123,18 @@ class CreateSurveyForm extends Component {
       alert('You must select at least 2 fake questionares! The must be placed adjecent to each other.');
       return;
     }
+    const followUpInfo = this.followUpSurveyId ?
+      {
+        surveyId: this.followUpSurveyId,
+        followUpMilliseconds: this.followUpMilliseconds
+      }
+      : null;
 
     const payload = {
       name: this.state.name,
-      adminId: "xyz",
       questionaresIDsAndTypes: this.state.selectedQuestionnares
-        .map(q => ({ id: q.id, type: q.type }))
+        .map(q => ({ id: q.id, type: q.type })),
+      followUpInfo,
     };
 
     fetch(createAuthorizedRequest("/api/surveys", {
@@ -150,29 +160,45 @@ class CreateSurveyForm extends Component {
     return (
       <div className="md-grid">
         <TextField id="survey-name" label="Name" value={this.state.name} onChange={this.handleNameChange} />
-        <List className="md-cell md-cell--6 md-paper md-paper--1" >
-          <Subheader primary primaryText="All questionares:" />
-          {this.state.availableQuestionnares.map(q => (
-            <ListItem key={q.id} primaryText={q.name} onClick={() => this.addQuestionnare(q)} />
-          ))}
 
-        </List>
-        <List className="md-cell md-cell--6 md-paper md-paper--1">
-          <Subheader primary primaryText="Selected:" />
-          {this.state.selectedQuestionnares.map(q => (
-            <ListItem style={q.type === 'fake' ? { background: fakeColor } : undefined} key={q.id} primaryText={q.name} onClick={() => this.removeQuestionnare(q)} />
-          ))}
-        </List>
-        <List className="md-cell md-cell--6 md-paper md-paper--1" >
-          <Subheader primary primaryText="All fake questionares:" />
-          {this.state.availableFakeQuestionnares.map(q => (
-            <ListItem style={{ background: fakeColor }} key={q.id} primaryText={q.name} onClick={() => this.addQuestionnare(q)} />
-          ))}
+        <div className="md-cell md-cell--6">
+          <List className="md-cell md-cell--6 md-paper md-paper--1" >
+            <Subheader primary primaryText="All questionares:" />
+            {this.state.availableQuestionnares.map(q => (
+              <ListItem key={q.id} primaryText={q.name} onClick={() => this.addQuestionnare(q)} />
+            ))}
 
-        </List>
+          </List>
+          <List className="md-paper md-paper--1" >
+            <Subheader primary primaryText="All fake questionares:" />
+            {this.state.availableFakeQuestionnares.map(q => (
+              <ListItem style={{ background: fakeColor }} key={q.id} primaryText={q.name} onClick={() => this.addQuestionnare(q)} />
+            ))}
 
-        <Button flat secondary onClick={this.props.onCancelCallback}>Cancel</Button>
-        <Button flat primary onClick={this.createSurvey}>Confirm</Button>
+          </List>
+        </div>
+
+        <div className="md-cell md-cell--6">
+          <List className="md-paper md-paper--1">
+            <Subheader primary primaryText="Selected:" />
+            {this.state.selectedQuestionnares.map(q => (
+              <ListItem style={q.type === 'fake' ? { background: fakeColor } : undefined} key={q.id} primaryText={q.name} onClick={() => this.removeQuestionnare(q)} />
+            ))}
+          </List>
+        </div>
+
+        <div className="md-cell md-cell--12">
+          <FollowUpSurveySelection onChange={id => this.followUpSurveyId = id} />
+        </div>
+
+        <div className="md-cell md-cell--6 md-grid">
+          <FollowUpIntervalFields onChange={ms => this.followUpMilliseconds = ms} />
+        </div>
+
+        <div className="md-cell md-cell--12">
+          <Button flat secondary onClick={this.props.onCancelCallback}>Cancel</Button>
+          <Button flat primary onClick={this.createSurvey}>Confirm</Button>
+        </div>
       </div>
     );
   }
