@@ -12,7 +12,9 @@ class CreateFormModalTrigger extends PureComponent {
   };
 
   hide = () => {
-    this.setState({ visible: false });
+    this.setState({ visible: false }, () => {
+      window.location.reload();
+    });
   };
 
   render() {

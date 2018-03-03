@@ -8,7 +8,7 @@ import { createAuthorizedRequest } from '../../utils';
 
 const InputFieldLikeText = ({ text }) => (
   <div className="md-text-field-container md-text-field-container--disabled md-text-field-container--input"
-  style={{ display: 'flex', alignItems: 'center', paddingLeft: '1%', paddingRight: '1%' }}
+    style={{ display: 'flex', alignItems: 'center', paddingLeft: '1%', paddingRight: '1%' }}
   >
     {text}
   </div>
@@ -25,15 +25,31 @@ class CreateTrickItemForm extends Component {
     },
     correctTrickAnswerIndex: 0
   })
-  
+
+  validateBlocks = blocks => {
+    if (blocks.filter(b => b.type === 'blank').length < 1) {
+      alert('Must have at least one blank block');
+      return false;
+    }
+
+    if (blocks.filter(b => b.type === 'text').length < 1) {
+      alert('Must have at least one text block');
+      return false;
+    }
+
+    return true;
+  }
+
   create = () => {
-    const { blocks, correctTrickAnswerIndex, trickAnswers} = this.state;
+    const { blocks, correctTrickAnswerIndex, trickAnswers } = this.state;
+    if (!this.validateBlocks(blocks)) return;
+
     const payload = {
       blocks,
       correctTrickAnswerIndex,
       trickAnswers
     };
-  
+
     fetch(createAuthorizedRequest(`/api/${this.props.resource}`, {
       headers: {
         'Accept': 'application/json',
@@ -130,7 +146,7 @@ class CreateTrickItemForm extends Component {
           label={`correct-answer`}
           checked={this.state.correctTrickAnswerIndex === j}
           onChange={() => this.handleCheck(j)}
-          // onClick={e => e.preventDefault()}
+        // onClick={e => e.preventDefault()}
         />
         <div className="md-cell md-cell--12" />
       </Fragment>
@@ -191,7 +207,7 @@ class CreateTrickItemForm extends Component {
         {/* <div className="md-grid"> */}
         <h4> Possible answers </h4>
         <div className="md-cell md-cell--12" />
-        
+
         {this.generateTrickAnswersJsx()}
         <div className="md-cell md-cell--12" />
         {this.generateTrickAnswerInput()}

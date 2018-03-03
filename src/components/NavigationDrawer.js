@@ -38,7 +38,9 @@ class Simple extends Component {
   };
 
   hide = () => {
-    this.setState({ visible: false, renderNode: null });
+    this.setState({ visible: false, renderNode: null }, () => {
+      window.location.reload();
+    });
   };
 
   handleShow = () => {

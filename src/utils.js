@@ -31,3 +31,11 @@ export const createAuthorizedRequest = (input, init) => {
   newInit.headers = newHeaders;
   return new Request(input, newInit);
 }
+
+export const validateExistanceAndPrompt = (value, valueName) => {
+  if (!value) {
+    alert(`${valueName} cannot be empty!`);
+    return false;
+  }
+  return true;
+}

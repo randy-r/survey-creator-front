@@ -31,7 +31,10 @@ class CreateAnswerTemplateForm extends Component {
 
   create = () => {
     const { bullets } = this.state;
-    if (bullets.length < 2) return;
+    if (bullets.length < 2) {
+      alert('Should have at least 2 answers');
+      return;
+    }
 
     const payload = {
       bullets,

@@ -3,7 +3,7 @@ import React, { PureComponent, Component, Fragment } from 'react';
 import {
   TextField, List, ListItem, Subheader, Button, Chip
 } from 'react-md';
-import { createAuthorizedRequest } from '../../utils';
+import { createAuthorizedRequest, validateExistanceAndPrompt } from '../../utils';
 
 
 // TODO find a way to extract the common functionality of CreateForm* but also keep in mind the perticular API calls, for example the item POST
@@ -63,14 +63,20 @@ class CreateItemForm extends Component {
   }
 
   create = () => {
-    if (this.state.selected.length < 1) return;
+    const { fieldValue } = this.state;
+    if (!validateExistanceAndPrompt(fieldValue, 'Text')) return;
+
+    if (this.state.selected.length < 1) {
+      alert('Must select at least 1 answer template');
+      return;
+    }
 
     let answerTemplate = this.state.selected[0];
     delete answerTemplate.adminId;
     delete answerTemplate.id;
 
     const payload = {
-      text: this.state.fieldValue,
+      text: fieldValue,
       answerTemplate,
       imgUrl: this.state.imgUrl
     };

@@ -16,7 +16,9 @@ class CreateFakeQuestionnaireModal extends PureComponent {
   };
 
   hide = () => {
-    this.setState({ visible: false });
+    this.setState({ visible: false }, () => {
+      window.location.reload();
+    });
   };
 
   render() {
@@ -48,7 +50,9 @@ class CreateQuestionnaireModal extends PureComponent {
   };
 
   hide = () => {
-    this.setState({ visible: false });
+    this.setState({ visible: false }, () => {
+      window.location.reload();
+    });
   };
 
   render() {

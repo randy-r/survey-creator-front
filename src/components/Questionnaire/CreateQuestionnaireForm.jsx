@@ -2,7 +2,7 @@ import React, { PureComponent, Component, Fragment } from 'react';
 import {
   TextField, List, ListItem, Subheader, Button
 } from 'react-md';
-import { createAuthorizedRequest } from '../../utils';
+import { createAuthorizedRequest, validateExistanceAndPrompt } from '../../utils';
 
 class CreateQuestionnaireForm extends Component {
 
@@ -59,6 +59,9 @@ class CreateQuestionnaireForm extends Component {
   }
 
   create = () => {
+    const { name } = this.state;
+    if (!validateExistanceAndPrompt(name, 'Name')) return;
+
     const payload = {
       name: this.state.name,
       [`${this.props.subResource}Ids`]: this.state.selected.map(el => el.id),

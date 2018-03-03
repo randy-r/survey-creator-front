@@ -21,7 +21,10 @@ class SimpleModal extends PureComponent {
   };
 
   hide = () => {
-    this.setState({ visible: false });
+    this.setState({ visible: false }, () => {
+      // TODO, perform the updating of a list by pulling state up or using a state management lib and discard the quick hack bellow
+      window.location.reload();
+    });
   };
 
   render() {

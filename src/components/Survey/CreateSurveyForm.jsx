@@ -2,9 +2,10 @@ import React, { PureComponent, Component, Fragment } from 'react';
 import {
   TextField, List, ListItem, Subheader, Button, SelectField
 } from 'react-md';
-import { createAuthorizedRequest } from '../../utils';
+import { createAuthorizedRequest, validateExistanceAndPrompt } from '../../utils';
 import FollowUpSurveySelection from './FollowUpSurveySelection';
 import FollowUpIntervalFields from './FollowUpIntervalFields';
+import FollowUpForm from './FollowUpForm';
 
 
 class CreateSurveyForm extends Component {
@@ -95,9 +96,13 @@ class CreateSurveyForm extends Component {
     }
   }
 
-  validate = () => {
-    // requirements say only 2 FQs are allowed and the must be adjecent
+  validateStructure = () => {
+    // requirements say only 0 or 2 FQs are allowed and the must be adjecent
+
     const { selectedQuestionnares } = this.state;
+    if (selectedQuestionnares.filter(sq => sq.type === 'fake').length === 0) {
+      return true;
+    }
     if (selectedQuestionnares.length < 1) return false;
     let numFakes = 0;
     let prevWasFake = false;
@@ -119,10 +124,14 @@ class CreateSurveyForm extends Component {
   }
 
   createSurvey = () => {
-    if (!this.validate()) {
-      alert('You must select at least 2 fake questionares! The must be placed adjecent to each other.');
+    const { name } = this.state;
+    if (!validateExistanceAndPrompt(name, 'Name')) return;
+
+    if (!this.validateStructure()) {
+      alert('You must select 0 or 2 fake questionares! The must be placed adjecent to each other.');
       return;
     }
+
     const followUpInfo = this.followUpSurveyId ?
       {
         surveyId: this.followUpSurveyId,
@@ -159,10 +168,10 @@ class CreateSurveyForm extends Component {
     const fakeColor = '#FFD8CD';
     return (
       <div className="md-grid">
-        <TextField id="survey-name" label="Name" value={this.state.name} onChange={this.handleNameChange} />
+        <TextField id="survey-name" label="Name" value={this.state.name} onChange={this.handleNameChange} required />
 
         <div className="md-cell md-cell--6">
-          <List className="md-cell md-cell--6 md-paper md-paper--1" >
+          <List className="md-paper md-paper--1" >
             <Subheader primary primaryText="All questionares:" />
             {this.state.availableQuestionnares.map(q => (
               <ListItem key={q.id} primaryText={q.name} onClick={() => this.addQuestionnare(q)} />
@@ -187,13 +196,7 @@ class CreateSurveyForm extends Component {
           </List>
         </div>
 
-        <div className="md-cell md-cell--12">
-          <FollowUpSurveySelection onChange={id => this.followUpSurveyId = id} />
-        </div>
-
-        <div className="md-cell md-cell--6 md-grid">
-          <FollowUpIntervalFields onChange={ms => this.followUpMilliseconds = ms} />
-        </div>
+        <FollowUpForm onSurveySelect={id => this.followUpSurveyId = id} onMilisecondsChange={ms => this.followUpMilliseconds = ms} />
 
         <div className="md-cell md-cell--12">
           <Button flat secondary onClick={this.props.onCancelCallback}>Cancel</Button>
