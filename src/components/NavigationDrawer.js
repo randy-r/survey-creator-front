@@ -52,12 +52,12 @@ class Simple extends Component {
     // const { listItemPressed } = location.state;
 
     return [
-      <NavItemLink to="/surveys" icon="assignment" label="Surveys" key="surveys" />,
-      <NavItemLink to="/questionnaires" exact icon="view_agenda" label="Questionnaires" key="questionnaires" />,
-      <NavItemLink to="/items" exact icon="view_module" label="Items" key="items" />,
-      <NavItemLink to="/fakequestionnaires" exact icon="dns" label="Fake Questionnaires" key="fakequestionnaires" />,
-      <NavItemLink to="/trickitems" exact icon="texture" label="Trick Items" key="trickitems" />,
-      <NavItemLink to="/answertemplates" exact icon="radio_button_checked" label="Answer Templates" key="answertemplates" />,
+      <NavItemLink to="/admin/surveys" icon="assignment" label="Surveys" key="surveys" />,
+      <NavItemLink to="/admin/questionnaires" exact icon="view_agenda" label="Questionnaires" key="questionnaires" />,
+      <NavItemLink to="/admin/items" exact icon="view_module" label="Items" key="items" />,
+      <NavItemLink to="/admin/fakequestionnaires" exact icon="dns" label="Fake Questionnaires" key="fakequestionnaires" />,
+      <NavItemLink to="/admin/trickitems" exact icon="texture" label="Trick Items" key="trickitems" />,
+      <NavItemLink to="/admin/answertemplates" exact icon="radio_button_checked" label="Answer Templates" key="answertemplates" />,
     ];
   }
 
@@ -90,12 +90,12 @@ class Simple extends Component {
             contentClassName="md-grid"
           >
             <section className="md-text-container md-cell md-cell--12">
-              <Route path="/surveys" exact component={SurveyPage} />
-              <Route path="/questionnaires" exact component={QuestionnairePage} />
-              <Route path="/items" exact component={ItemsPage} />
-              <Route path="/fakequestionnaires" exact component={FakeQuestionnairePage} />
-              <Route path="/trickitems" exact component={TrickItemsPage} />
-              <Route path="/answertemplates" exact component={AnswerTemplatesPage} />
+              <Route path="/admin/surveys" exact component={SurveyPage} />
+              <Route path="/admin/questionnaires" exact component={QuestionnairePage} />
+              <Route path="/admin/items" exact component={ItemsPage} />
+              <Route path="/admin/fakequestionnaires" exact component={FakeQuestionnairePage} />
+              <Route path="/admin/trickitems" exact component={TrickItemsPage} />
+              <Route path="/admin/answertemplates" exact component={AnswerTemplatesPage} />
             </section>
           </NavigationDrawer>
         </DialogContainer>
