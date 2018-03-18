@@ -9,6 +9,13 @@ export const getSurveyPublicUrls = surveyId => {
   return [`${window.location.origin}/user/take-survey/${surveyId}`, `${window.location.origin}/user/take-survey/${surveyId}`];
 };
 
+export const getSurveyResultsDownloadUrl = surveyId => {
+  if (isDev) {
+    return `http://localhost:5111/api/results?sids[]=${surveyId}`;
+  }
+  return [`${window.location.origin}/api/results?sids[]=${surveyId}`, `${window.location.origin}/api/results?sids[]=${surveyId}`];
+}
+
 export const getToken = () => localStorage.getItem('access_token');
 
 export const createAuthorizedRequest = (input, init) => {

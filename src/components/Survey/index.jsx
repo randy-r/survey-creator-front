@@ -6,7 +6,10 @@ import {
 import cn from 'classnames';
 
 import { CreateSurveyForm } from './CreateSurveyForm';
-import { getSurveyPublicUrls, getToken, createAuthorizedRequest } from '../../utils';
+import {
+  getSurveyPublicUrls, getSurveyResultsDownloadUrl,
+  getToken, createAuthorizedRequest
+} from '../../utils';
 import { List } from '../List';
 
 
@@ -61,6 +64,7 @@ class SurveyPage extends Component {
             <Fragment>
               <h4>public urls: </h4>
               {getSurveyPublicUrls(s.id).map(u => <p key={u}><a href={u}>{u}</a></p>)}
+              {s.followUpInfo && <Button href={getSurveyResultsDownloadUrl(s.id)} raised primary>Download Results</Button>}
             </Fragment>
           )}
         />
