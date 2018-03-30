@@ -11,10 +11,11 @@ import FollowUpForm from './FollowUpForm';
 class CreateSurveyForm extends Component {
 
   state = {
-    name: "",
+    name: '',
     availableQuestionnares: [],
     availableFakeQuestionnares: [],
     selectedQuestionnares: [],
+    instructions: '',
   }
 
   inProgress = false
@@ -48,6 +49,7 @@ class CreateSurveyForm extends Component {
   }
 
   handleNameChange = newVal => this.setState({ name: newVal })
+  handleInstructionsChange = newVal => this.setState({ instructions: newVal })
 
   addQuestionnare = q => {
     if (this.inProgress) return;
@@ -139,11 +141,13 @@ class CreateSurveyForm extends Component {
       }
       : null;
 
+    const trimmed = this.state.instructions.trim();
     const payload = {
       name: this.state.name,
       questionaresIDsAndTypes: this.state.selectedQuestionnares
         .map(q => ({ id: q.id, type: q.type })),
       followUpInfo,
+      instructions: trimmed === '' ? null : trimmed,
     };
 
     fetch(createAuthorizedRequest("/api/surveys", {
@@ -169,7 +173,13 @@ class CreateSurveyForm extends Component {
     return (
       <div className="md-grid">
         <TextField id="survey-name" label="Name" value={this.state.name} onChange={this.handleNameChange} required />
-
+        <TextField
+          id="autoresizing-2"
+          label="Instructions (optional)"
+          rows={2}
+          value={this.state.instructions}
+          onChange={this.handleInstructionsChange}
+        />
         <div className="md-cell md-cell--6">
           <List className="md-paper md-paper--1" >
             <Subheader primary primaryText="All questionares:" />

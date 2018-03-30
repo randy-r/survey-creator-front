@@ -10,7 +10,8 @@ class CreateQuestionnaireForm extends Component {
   // subResource = 'items'
 
   state = {
-    name: "",
+    name: '',
+    instructions: '',
     available: [],
     selected: []
   }
@@ -31,6 +32,7 @@ class CreateQuestionnaireForm extends Component {
   }
 
   handleNameChange = newVal => this.setState({ name: newVal })
+  handleInstructionsChange = newVal => this.setState({ instructions: newVal })
 
   add = x => {
     if (this.inProgress) return;
@@ -62,10 +64,12 @@ class CreateQuestionnaireForm extends Component {
     const { name } = this.state;
     if (!validateExistanceAndPrompt(name, 'Name')) return;
 
+    const trimmed = this.state.instructions.trim();
     const payload = {
       name: this.state.name,
       [`${this.props.subResource}Ids`]: this.state.selected.map(el => el.id),
-      type: this.props.questionnaireType
+      type: this.props.questionnaireType,
+      instructions: trimmed === '' ? null : trimmed,
     };
 
     fetch(createAuthorizedRequest(`/api/${this.props.resource}`, {
@@ -100,6 +104,13 @@ class CreateQuestionnaireForm extends Component {
     return (
       <div className="md-grid">
         <TextField id="survey-name" label="Name" value={this.state.name} onChange={this.handleNameChange} />
+        <TextField
+          id="autoresizing-2"
+          label="Instructions (optional)"
+          rows={2}
+          value={this.state.instructions}
+          onChange={this.handleInstructionsChange}
+        />
         <List className="md-cell md-cell--6 md-paper md-paper--1" >
           <Subheader primary primaryText={`All ${this.props.subResource}:`} />
           {this.state.available.map(el => (
