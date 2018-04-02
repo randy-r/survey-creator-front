@@ -7,7 +7,7 @@ import { createAuthorizedRequest } from '../../utils';
 
 
 class FollowUpSurveySelection extends Component {
-  state = { all: [] }
+  state = { all: [], selectedValue: '' }
 
   componentDidMount() {
     const { resource } = this.props;
@@ -32,7 +32,10 @@ class FollowUpSurveySelection extends Component {
 
   handleChange = (value, index) => {
     const { onChange } = this.props;
-    onChange(value || null); // convert undefined and '' to null
+    this.setState({ selectedValue: value }, () => {
+      const newValue = value || null; // convert undefined and '' to null
+      onChange(newValue);
+    });
   }
 
   render() {
@@ -45,6 +48,7 @@ class FollowUpSurveySelection extends Component {
         menuItems={this.createMenuItems()}
         onChange={this.handleChange}
         simplifiedMenu={true}
+        value={this.state.selectedValue}
       />
     );
   }
