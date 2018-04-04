@@ -17,13 +17,13 @@ const InputFieldLikeText = ({ text }) => (
 
 class CreateTrickItemForm extends Component {
   state = ({
-    blocks: [],
     value: '',
-    trickAnswers: [],
-    crtTrickAnswer: {
-      values: []
-    },
-    correctTrickAnswerIndex: 0
+    blocks: [],
+    crtInputValue: '',
+    crtIsCorrect: false,
+    answersPool: [],
+    crtCorrectInputValue: '',
+    answersPoolCorrect: [], // the order is important, there is only this correct answer sequence
   })
 
   validateBlocks = blocks => {
@@ -40,14 +40,24 @@ class CreateTrickItemForm extends Component {
     return true;
   }
 
-  create = () => {
-    const { blocks, correctTrickAnswerIndex, trickAnswers } = this.state;
-    if (!this.validateBlocks(blocks)) return;
+  validate = (blocks, answersPool, answersPoolCorrect) => {
+    if (!this.validateBlocks(blocks)) {
+      return false;
+    }
+    if (blocks.filter(b => b.type === 'blank').length !== answersPoolCorrect.length) {
+      alert('Must have the same number of blanks as correct answers');
+      return false;
+    }
+    return true;
+  }
 
+  create2 = () => {
+    const { blocks, answersPool, answersPoolCorrect } = this.state;
+    if (!this.validate(blocks, answersPool, answersPoolCorrect)) return;
     const payload = {
       blocks,
-      correctTrickAnswerIndex,
-      trickAnswers
+      answersPool,
+      correctAnswersPool: answersPoolCorrect,
     };
 
     fetch(createAuthorizedRequest(`/api/${this.props.resource}`, {
@@ -101,83 +111,28 @@ class CreateTrickItemForm extends Component {
     }
   }
 
-  addAnswer = () => {
-    // const valuesCopy = ['dsa', 'zzz']
-    const valuesCopy = this.state.crtTrickAnswer.values.splice(0);
-    const trickAnswersCopy = this.state.trickAnswers.splice(0);
-    trickAnswersCopy.push({ values: valuesCopy });
+  addAnswer2 = () => {
+    const { crtInputValue, answersPool } = this.state;
+
     this.setState({
-      trickAnswers: trickAnswersCopy,
-      // crtTrickAnswer: { values: this.state.blocks.filter(b => b.text == 'blank').map(b => '') }
-    })
+      crtInputValue: '',
+      answersPool: answersPool.concat([crtInputValue]),
+    });
   }
 
-  handleTrickValueChange = (value, i) => {
-    const copy = this.state.crtTrickAnswer.values.splice(0);
-    copy[i] = value;
+  addAnswerCorrect = () => {
+    const { crtCorrectInputValue, answersPoolCorrect } = this.state;
 
-    this.setState({ crtTrickAnswer: { values: copy } })
-  }
-
-  handleCheck = index => {
-    console.log('index ', index);
     this.setState({
-      correctTrickAnswerIndex: index
-    })
+      crtCorrectInputValue: '',
+      answersPoolCorrect: answersPoolCorrect.concat([crtCorrectInputValue]),
+    });
   }
-
-  generateTrickAnswersJsx = () => {
-    const { trickAnswers } = this.state;
-    const answers = [];
-    return trickAnswers.map((a, j) =>
-      <Fragment key={j}>
-        <InputFieldLikeText text={`${j + 1})`} />
-        {a.values.map((v, i) => (
-          // show each field
-          <InputFieldLikeText
-            key={`${j}-${i}`}
-            text={`${v},`}
-          />
-
-        ))}
-        <Checkbox
-          id={`custom-checkbox-icon-${j}`}
-          name={`using-custom-icons-${j}`}
-          label={`correct-answer`}
-          checked={this.state.correctTrickAnswerIndex === j}
-          onChange={() => this.handleCheck(j)}
-        // onClick={e => e.preventDefault()}
-        />
-        <div className="md-cell md-cell--12" />
-      </Fragment>
-    );
-
-  }
-
-  generateTrickAnswerInput = () => {
-    const { blocks, crtTrickAnswer } = this.state;
-
-    return blocks.filter(b => b.type !== 'text').map((_, i) => (
-      <TextField
-        key={`$${i}`}
-        id={`trick-answer-${i}`}
-        placeholder="Enter word..."
-        lineDirection="center"
-        className="md-cell"
-        value={crtTrickAnswer.values[i] ? crtTrickAnswer.values[i] : ''}
-        onChange={value => this.handleTrickValueChange(value, i)}
-        resize={{ max: 340 }}
-      />
-    ));
-  }
-
 
   render() {
-    const { value, blocks } = this.state;
-    console.log('blocks ', blocks)
     return (
       <div className="md-grid">
-        {blocks.map((b, i) => {
+        {this.state.blocks.map((b, i) => {
           if (b.type === 'text') {
             return <InputFieldLikeText key={i} text={b.text} />
           }
@@ -194,30 +149,66 @@ class CreateTrickItemForm extends Component {
         <TextField
           id="trick-item-block-text"
           onChange={this.handleTextChange}
-          value={value}
+          value={this.state.value}
           className="md-cell md-cell--12"
           placeholder="Text Section"
           onKeyUp={this.handleEnter}
-          disabled={this.state.trickAnswers.length !== 0}
         />
         <div className="md-cell md-cell--12 md-cell--center" style={{ display: 'flex', justifyContent: 'center' }}>
-          <Button className="md-cell md-cell--3" disabled={this.state.trickAnswers.length !== 0} onClick={this.addText} flat secondary iconChildren="add_circle_outline">Add Text</Button>
-          <Button className="md-cell md-cell--3" disabled={this.state.trickAnswers.length !== 0} onClick={this.addBlank} flat primary iconChildren="add_circle_outline">Add Blank</Button>
+          <Button className="md-cell md-cell--3" onClick={this.addText} flat secondary iconChildren="add_circle_outline">Add Text</Button>
+          <Button className="md-cell md-cell--3" onClick={this.addBlank} flat primary iconChildren="add_circle_outline">Add Blank</Button>
         </div>
-        {/* <div className="md-grid"> */}
-        <h4> Possible answers </h4>
+
+        <h4>Fake answers </h4>
         <div className="md-cell md-cell--12" />
 
-        {this.generateTrickAnswersJsx()}
+        {this.state.answersPool.map((badE, ii) => {
+          return <InputFieldLikeText text={`${badE}`} />
+        })}
+        <TextField
+          id={`trick-answer-$`}
+          placeholder="Enter trick/fake word..."
+          lineDirection="center"
+          className="md-cell"
+          value={this.state.crtInputValue}
+          onChange={value => this.setState({ crtInputValue: value })}
+          resize={{ max: 340 }}
+        />
         <div className="md-cell md-cell--12" />
-        {this.generateTrickAnswerInput()}
 
-        {/* </div> */}
 
         <div className="md-cell md-cell--12 md-cell--center" style={{ display: 'flex', justifyContent: 'center' }}>
-          <Button className="md-cell md-cell--3" disabled={this.state.blocks.length === 0} onClick={this.addAnswer} flat secondary iconChildren="add_circle_outline">Add Answer</Button>
+          <Button className="md-cell md-cell--3" disabled={!this.state.crtInputValue} onClick={this.addAnswer2} flat secondary iconChildren="add_circle_outline">
+            Add Fake Answer
+          </Button>
         </div>
-        <Button flat primary onClick={this.create}>Confirm</Button>
+
+        <h4>Correct answers </h4>
+        <div className="md-cell md-cell--12" />
+        {this.state.answersPoolCorrect.map((correctE, jj) => {
+          return <InputFieldLikeText text={`${correctE}`} />
+        })}
+
+        <TextField
+          id={`trick-answer-$$$`}
+          placeholder="Enter correct word..."
+          lineDirection="center"
+          className="md-cell"
+          value={this.state.crtCorrectInputValue}
+          onChange={value => this.setState({ crtCorrectInputValue: value })}
+          resize={{ max: 340 }}
+        />
+        <div className="md-cell md-cell--12" />
+
+
+        <div className="md-cell md-cell--12 md-cell--center" style={{ display: 'flex', justifyContent: 'center' }}>
+          <Button className="md-cell md-cell--3" disabled={!this.state.crtCorrectInputValue} onClick={this.addAnswerCorrect} flat secondary iconChildren="add_circle_outline">
+            Add Correct Answer
+          </Button>
+        </div>
+
+        <div className="md-cell md-cell--12" />
+        <Button flat primary onClick={this.create2}>Confirm</Button>
       </div>
     );
   }
