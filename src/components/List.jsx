@@ -44,7 +44,6 @@ class ExpansionPanelWithData extends Component {
         return response.json();
       })
       .then(entity => {
-        console.log(entity);
         this.setState({ entity });
       })
       .catch(e => console.error(`error GET ${resource} at ${id}`, e))
@@ -79,7 +78,6 @@ class List extends Component {
         return response.json();
       })
       .then(all => {
-        console.log(all);
         this.setState({ all });
       })
       .catch(e => console.error(`error GET ${resource}`, e))
@@ -100,7 +98,6 @@ class List extends Component {
             renderContent={renderContent}
             contentUrl={createContentUrl ? createContentUrl(s.id) : null}
             label={titleRender(s)}
-            onCancel={() => console.log('cancel')}
           />
         )}
       </ExpansionList>

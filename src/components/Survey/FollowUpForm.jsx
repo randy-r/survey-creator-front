@@ -11,7 +11,6 @@ class FollowUpForm extends Component {
 
   handleSurveyChange = id => {
     const { onSurveySelect } = this.props;
-    console.log(id);
     this.setState({ showIntervals: !!id }, () => onSurveySelect(id))
   }
 

@@ -50,11 +50,10 @@ class CreateAnswerTemplateForm extends Component {
     })).then(response => {
       return response.json();
     }).then(json => {
-      console.log(json);
       this.props.onSaveCallback();
     })
       .catch(error => {
-        console.log('There has been a problem with your fetch operation: ', error.message);
+        console.error('There has been a problem with your fetch operation: ', error.message);
       });
   }
 

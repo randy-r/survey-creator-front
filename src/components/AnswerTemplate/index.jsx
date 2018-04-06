@@ -20,7 +20,6 @@ class AnswerTemplatesList extends Component {
         return response.json();
       })
       .then(all => {
-        console.log(all);
         this.setState({ all });
       })
       .catch(e => console.error(`error GET ${resource}`, e))
