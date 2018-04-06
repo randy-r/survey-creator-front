@@ -59,9 +59,22 @@ class CreateQuestionnaireForm extends Component {
     }, () => this.inProgress = false);
   }
 
+  validateItems = () => {
+    const imageItemsCount = this.state.selected.filter(el => !!el.imgUrl).length;
+    const normalItemsCount = this.state.selected.length - imageItemsCount;
+    const cond = (imageItemsCount > 1) || ((normalItemsCount > 0) && imageItemsCount > 0);
+    if (cond) {
+      alert('An image item must be the one and only item in a survey!');
+      this.inProgress = false;
+      return false;;
+    }
+    return true;
+  }
+
   create = () => {
     const { name } = this.state;
     if (!validateExistanceAndPrompt(name, 'Name')) return;
+    if (!this.validateItems()) return;
 
     const trimmed = this.state.instructions.trim();
     const payload = {
