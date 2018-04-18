@@ -16,6 +16,7 @@ class CreateSurveyForm extends Component {
     availableFakeQuestionnares: [],
     selectedQuestionnares: [],
     instructions: '',
+    postInstructions: '',
   }
 
   inProgress = false
@@ -48,6 +49,7 @@ class CreateSurveyForm extends Component {
 
   handleNameChange = newVal => this.setState({ name: newVal })
   handleInstructionsChange = newVal => this.setState({ instructions: newVal })
+  handlePostInstructionsChange = newVal => this.setState({ postInstructions: newVal })
 
   addQuestionnare = q => {
     if (this.inProgress) return;
@@ -140,12 +142,14 @@ class CreateSurveyForm extends Component {
       : null;
 
     const trimmed = this.state.instructions.trim();
+    const posttrimmed = this.state.postInstructions.trim();
     const payload = {
       name: this.state.name,
       questionaresIDsAndTypes: this.state.selectedQuestionnares
         .map(q => ({ id: q.id, type: q.type })),
       followUpInfo,
       instructions: trimmed === '' ? null : trimmed,
+      postInstructions: posttrimmed === '' ? null : posttrimmed,
     };
 
     fetch(createAuthorizedRequest("/api/surveys", {
@@ -176,6 +180,13 @@ class CreateSurveyForm extends Component {
           rows={2}
           value={this.state.instructions}
           onChange={this.handleInstructionsChange}
+        />
+        <TextField
+          id="autoresizing-2"
+          label="Post Instructions (optional)"
+          rows={2}
+          value={this.state.postInstructions}
+          onChange={this.handlePostInstructionsChange}
         />
         <div className="md-cell md-cell--6">
           <List className="md-paper md-paper--1" >
