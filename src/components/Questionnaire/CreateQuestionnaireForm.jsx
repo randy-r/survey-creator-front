@@ -62,6 +62,10 @@ class CreateQuestionnaireForm extends Component {
   }
 
   validateItems = () => {
+    if(this.state.selected.length < 1){
+      alert('You must select at least one item!');
+      return false;
+    }
     const imageItemsCount = this.state.selected.filter(el => !!el.imgUrl).length;
     const normalItemsCount = this.state.selected.length - imageItemsCount;
     const cond = (imageItemsCount > 1) || ((normalItemsCount > 0) && imageItemsCount > 0);
