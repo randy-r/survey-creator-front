@@ -12,6 +12,7 @@ class CreateQuestionnaireForm extends Component {
   state = {
     name: '',
     instructions: '',
+    postInstructions: '',
     available: [],
     selected: []
   }
@@ -32,6 +33,7 @@ class CreateQuestionnaireForm extends Component {
 
   handleNameChange = newVal => this.setState({ name: newVal })
   handleInstructionsChange = newVal => this.setState({ instructions: newVal })
+  handlePostInstructionsChange = newVal => this.setState({ postInstructions: newVal })
 
   add = x => {
     if (this.inProgress) return;
@@ -60,6 +62,10 @@ class CreateQuestionnaireForm extends Component {
   }
 
   validateItems = () => {
+    if(this.state.selected.length < 1){
+      alert('You must select at least one item!');
+      return false;
+    }
     const imageItemsCount = this.state.selected.filter(el => !!el.imgUrl).length;
     const normalItemsCount = this.state.selected.length - imageItemsCount;
     const cond = (imageItemsCount > 1) || ((normalItemsCount > 0) && imageItemsCount > 0);
@@ -77,11 +83,13 @@ class CreateQuestionnaireForm extends Component {
     if (!this.validateItems()) return;
 
     const trimmed = this.state.instructions.trim();
+    const posttrimmed = this.state.postInstructions.trim();
     const payload = {
       name: this.state.name,
       [`${this.props.subResource}Ids`]: this.state.selected.map(el => el.id),
       type: this.props.questionnaireType,
       instructions: trimmed === '' ? null : trimmed,
+      postInstructions: posttrimmed === '' ? null : posttrimmed,
     };
 
     fetch(createAuthorizedRequest(`/api/${this.props.resource}`, {
@@ -121,6 +129,13 @@ class CreateQuestionnaireForm extends Component {
           rows={2}
           value={this.state.instructions}
           onChange={this.handleInstructionsChange}
+        />
+        <TextField
+          id="autoresizing-3"
+          label="Post Instructions (optional)"
+          rows={2}
+          value={this.state.postInstructions}
+          onChange={this.handlePostInstructionsChange}
         />
         <List className="md-cell md-cell--6 md-paper md-paper--1" >
           <Subheader primary primaryText={`All ${this.props.subResource}:`} />

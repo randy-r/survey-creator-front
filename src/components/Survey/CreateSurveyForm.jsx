@@ -16,6 +16,7 @@ class CreateSurveyForm extends Component {
     availableFakeQuestionnares: [],
     selectedQuestionnares: [],
     instructions: '',
+    postInstructions: '',
   }
 
   inProgress = false
@@ -48,6 +49,7 @@ class CreateSurveyForm extends Component {
 
   handleNameChange = newVal => this.setState({ name: newVal })
   handleInstructionsChange = newVal => this.setState({ instructions: newVal })
+  handlePostInstructionsChange = newVal => this.setState({ postInstructions: newVal })
 
   addQuestionnare = q => {
     if (this.inProgress) return;
@@ -97,13 +99,13 @@ class CreateSurveyForm extends Component {
   }
 
   validateStructure = () => {
-    // requirements say only 0 or 2 FQs are allowed and the must be adjecent
-
     const { selectedQuestionnares } = this.state;
+    if (selectedQuestionnares.length < 1) return false;
+    
+    // requirements say only 0 or 2 FQs are allowed and they must be adjecent
     if (selectedQuestionnares.filter(sq => sq.type === 'fake').length === 0) {
       return true;
     }
-    if (selectedQuestionnares.length < 1) return false;
     let numFakes = 0;
     let prevWasFake = false;
     for (let i = 0; i < selectedQuestionnares.length; ++i) {
@@ -128,7 +130,7 @@ class CreateSurveyForm extends Component {
     if (!validateExistanceAndPrompt(name, 'Name')) return;
 
     if (!this.validateStructure()) {
-      alert('You must select 0 or 2 fake questionares! The must be placed adjecent to each other.');
+      alert('You must select at least 1 questionnaire and 0 or 2 fake questionares! They must be placed adjecent to each other.');
       return;
     }
 
@@ -140,12 +142,14 @@ class CreateSurveyForm extends Component {
       : null;
 
     const trimmed = this.state.instructions.trim();
+    const posttrimmed = this.state.postInstructions.trim();
     const payload = {
       name: this.state.name,
       questionaresIDsAndTypes: this.state.selectedQuestionnares
         .map(q => ({ id: q.id, type: q.type })),
       followUpInfo,
       instructions: trimmed === '' ? null : trimmed,
+      postInstructions: posttrimmed === '' ? null : posttrimmed,
     };
 
     fetch(createAuthorizedRequest("/api/surveys", {
@@ -176,6 +180,13 @@ class CreateSurveyForm extends Component {
           rows={2}
           value={this.state.instructions}
           onChange={this.handleInstructionsChange}
+        />
+        <TextField
+          id="autoresizing-2"
+          label="Post Instructions (optional)"
+          rows={2}
+          value={this.state.postInstructions}
+          onChange={this.handlePostInstructionsChange}
         />
         <div className="md-cell md-cell--6">
           <List className="md-paper md-paper--1" >
